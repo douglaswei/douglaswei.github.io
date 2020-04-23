@@ -1,0 +1,642 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Hadoop-入门 | 道哥的后院</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Douglas">
+    
+
+    
+    <meta name="description" content="CDH安装配置安装123wget https:&#x2F;&#x2F;archive.cloudera.com&#x2F;cm5&#x2F;installer&#x2F;latest&#x2F;cloudera-manager-installer.binchmod u+x cloudera-manager-installer.binsudo .&#x2F;cloudera-manager-inst">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hadoop-入门">
+<meta property="og:url" content="http://yoursite.com/2016/04/13/hadoop-%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="道哥的后院">
+<meta property="og:description" content="CDH安装配置安装123wget https:&#x2F;&#x2F;archive.cloudera.com&#x2F;cm5&#x2F;installer&#x2F;latest&#x2F;cloudera-manager-installer.binchmod u+x cloudera-manager-installer.binsudo .&#x2F;cloudera-manager-inst">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-04-13T05:05:43.000Z">
+<meta property="article:modified_time" content="2020-04-23T09:49:14.544Z">
+<meta property="article:author" content="Douglas">
+<meta property="article:tag" content="Hadoop">
+<meta property="article:tag" content="CDH">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="alternative" href="/atom.xml" title="道哥的后院" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="道哥的后院" title="道哥的后院"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="道哥的后院">道哥的后院</a></h1>
+				<h2 class="blog-motto">在海边有个院子,一条躺椅,一个胖丫鬟,种点乱七八糟的,闲来在胖丫鬟屁股上拧一把,换来娇羞的一声&#34;老爷讨厌&#34;</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/04/13/hadoop-入门/" title="Hadoop-入门" itemprop="url">Hadoop-入门</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Douglas" target="_blank" itemprop="author">Douglas</a>
+		
+  <p class="article-time">
+    <time datetime="2016-04-13T05:05:43.000Z" itemprop="datePublished"> 发表于 2016-04-13</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#CDH安装配置"><span class="toc-number">1.</span> <span class="toc-text">CDH安装配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装"><span class="toc-number">1.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置"><span class="toc-number">1.2.</span> <span class="toc-text">配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hadoop生态圈组件"><span class="toc-number">2.</span> <span class="toc-text">hadoop生态圈组件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache-Hadoop（Common、HDFS、MapReduce、YARN）"><span class="toc-number">2.1.</span> <span class="toc-text">Apache Hadoop（Common、HDFS、MapReduce、YARN）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache-HBase"><span class="toc-number">2.2.</span> <span class="toc-text">Apache HBase</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache-ZooKeeper"><span class="toc-number">2.3.</span> <span class="toc-text">Apache ZooKeeper</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache-Oozie"><span class="toc-number">2.4.</span> <span class="toc-text">Apache Oozie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache-Hive"><span class="toc-number">2.5.</span> <span class="toc-text">Apache Hive</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hue（已获-Apache-许可）"><span class="toc-number">2.6.</span> <span class="toc-text">Hue（已获 Apache 许可）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache-Flume"><span class="toc-number">2.7.</span> <span class="toc-text">Apache Flume</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cloudera-Impala（许可的-Apache）"><span class="toc-number">2.8.</span> <span class="toc-text">Cloudera Impala（许可的 Apache）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache-Sentry"><span class="toc-number">2.9.</span> <span class="toc-text">Apache Sentry</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache-Sqoop"><span class="toc-number">2.10.</span> <span class="toc-text">Apache Sqoop</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cloudera-Search（许可的-Apache）"><span class="toc-number">2.11.</span> <span class="toc-text">Cloudera Search（许可的 Apache）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache-Spark-todo"><span class="toc-number">2.12.</span> <span class="toc-text">Apache Spark(todo)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache-Storm-todo"><span class="toc-number">2.13.</span> <span class="toc-text">Apache Storm(todo)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装结果"><span class="toc-number">3.</span> <span class="toc-text">安装结果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Mahout"><span class="toc-number">4.</span> <span class="toc-text">Mahout</span></a></li></ol>
+		
+		</div>
+		
+		<h2 id="CDH安装配置"><a href="#CDH安装配置" class="headerlink" title="CDH安装配置"></a>CDH安装配置</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;archive.cloudera.com&#x2F;cm5&#x2F;installer&#x2F;latest&#x2F;cloudera-manager-installer.bin</span><br><span class="line">chmod u+x cloudera-manager-installer.bin</span><br><span class="line">sudo .&#x2F;cloudera-manager-installer.bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;localhost:7180&#x2F;</span><br><span class="line">root auth</span><br></pre></td></tr></table></figure>
+
+<h2 id="hadoop生态圈组件"><a href="#hadoop生态圈组件" class="headerlink" title="hadoop生态圈组件"></a>hadoop生态圈组件</h2><h3 id="Apache-Hadoop（Common、HDFS、MapReduce、YARN）"><a href="#Apache-Hadoop（Common、HDFS、MapReduce、YARN）" class="headerlink" title="Apache Hadoop（Common、HDFS、MapReduce、YARN）"></a>Apache Hadoop（Common、HDFS、MapReduce、YARN）</h3><pre><code>数据操作系统，在hdfs之上提供了对数据资源的调度</code></pre><h3 id="Apache-HBase"><a href="#Apache-HBase" class="headerlink" title="Apache HBase"></a>Apache HBase</h3><pre><code>hdfs之上的Nosql数据库；
+主要概念有：行键、列簇、列修饰符、版本号</code></pre><h3 id="Apache-ZooKeeper"><a href="#Apache-ZooKeeper" class="headerlink" title="Apache ZooKeeper"></a>Apache ZooKeeper</h3><pre><code>分布式资源服务的协调平台</code></pre><h3 id="Apache-Oozie"><a href="#Apache-Oozie" class="headerlink" title="Apache Oozie"></a>Apache Oozie</h3><pre><code>工作流引擎服务器，基于MR定义了工作流</code></pre><h3 id="Apache-Hive"><a href="#Apache-Hive" class="headerlink" title="Apache Hive"></a>Apache Hive</h3><pre><code>基于hadoop的数据仓库，可以将结构化的数据文件映射成数据库表，并提供简单的查询功能，底层转化为MR</code></pre><h3 id="Hue（已获-Apache-许可）"><a href="#Hue（已获-Apache-许可）" class="headerlink" title="Hue（已获 Apache 许可）"></a>Hue（已获 Apache 许可）</h3><pre><code>hadoop的可视化工具</code></pre><h3 id="Apache-Flume"><a href="#Apache-Flume" class="headerlink" title="Apache Flume"></a>Apache Flume</h3><pre><code>数据流中间件；类似的产品为logstash</code></pre><h3 id="Cloudera-Impala（许可的-Apache）"><a href="#Cloudera-Impala（许可的-Apache）" class="headerlink" title="Cloudera Impala（许可的 Apache）"></a>Cloudera Impala（许可的 Apache）</h3><pre><code>类似于hive，区别是不急于MR，更快速</code></pre><h3 id="Apache-Sentry"><a href="#Apache-Sentry" class="headerlink" title="Apache Sentry"></a>Apache Sentry</h3><pre><code>python的日志分析平台</code></pre><h3 id="Apache-Sqoop"><a href="#Apache-Sqoop" class="headerlink" title="Apache Sqoop"></a>Apache Sqoop</h3><pre><code>ETL工具，用于在hive和传统sql数据库之间传输数据</code></pre><h3 id="Cloudera-Search（许可的-Apache）"><a href="#Cloudera-Search（许可的-Apache）" class="headerlink" title="Cloudera Search（许可的 Apache）"></a>Cloudera Search（许可的 Apache）</h3><pre><code>solr</code></pre><h3 id="Apache-Spark-todo"><a href="#Apache-Spark-todo" class="headerlink" title="Apache Spark(todo)"></a>Apache Spark(todo)</h3><h3 id="Apache-Storm-todo"><a href="#Apache-Storm-todo" class="headerlink" title="Apache Storm(todo)"></a>Apache Storm(todo)</h3><h2 id="安装结果"><a href="#安装结果" class="headerlink" title="安装结果"></a>安装结果</h2><pre><code>Bigtop-Tomcat（仅限 CDH 5） 0.7.0+cdh5.7.0+0    1.cdh5.7.0.p0.78    CDH 5
+Crunch（仅限 CDH 5 ）   0.11.0+cdh5.7.0+93  1.cdh5.7.0.p0.78    CDH 5
+Flume NG    1.6.0+cdh5.7.0+37   1.cdh5.7.0.p0.79    CDH 5
+MapReduce 1 2.6.0+cdh5.7.0+1280 1.cdh5.7.0.p0.92    CDH 5
+Hadoop  2.6.0+cdh5.7.0+1280 1.cdh5.7.0.p0.92    CDH 5
+HDFS    2.6.0+cdh5.7.0+1280 1.cdh5.7.0.p0.92    CDH 5
+HttpFS  2.6.0+cdh5.7.0+1280 1.cdh5.7.0.p0.92    CDH 5
+hadoop-kms  2.6.0+cdh5.7.0+1280 1.cdh5.7.0.p0.92    CDH 5
+MapReduce 2 2.6.0+cdh5.7.0+1280 1.cdh5.7.0.p0.92    CDH 5
+YARN    2.6.0+cdh5.7.0+1280 1.cdh5.7.0.p0.92    CDH 5
+HBase   1.2.0+cdh5.7.0+129  1.cdh5.7.0.p0.88    CDH 5
+Lily HBase Indexer  1.5+cdh5.7.0+64 1.cdh5.7.0.p0.78    CDH 5
+Hive    1.1.0+cdh5.7.0+522  1.cdh5.7.0.p0.88    CDH 5
+HCatalog    1.1.0+cdh5.7.0+522  1.cdh5.7.0.p0.88    CDH 5
+Hue 3.9.0+cdh5.7.0+1759 1.cdh5.7.0.p0.86    CDH 5
+Impala  2.5.0+cdh5.7.0+0    1.cdh5.7.0.p0.147   CDH 5
+Kite（仅限 CDH 5 ） 1.0.0+cdh5.7.0+130  1.cdh5.7.0.p0.77    CDH 5
+Llama（仅限 CDH 5 ）    1.0.0+cdh5.7.0+0    1.cdh5.7.0.p0.78    CDH 5
+Mahout  0.9+cdh5.7.0+29 1.cdh5.7.0.p0.79    CDH 5
+Oozie   4.1.0+cdh5.7.0+267  1.cdh5.7.0.p0.78    CDH 5
+Parquet 1.5.0+cdh5.7.0+176  1.cdh5.7.0.p0.78    CDH 5
+Pig 0.12.0+cdh5.7.0+84  1.cdh5.7.0.p0.77    CDH 5
+sentry  1.5.1+cdh5.7.0+184  1.cdh5.7.0.p0.86    CDH 5
+Solr    4.10.3+cdh5.7.0+389 1.cdh5.7.0.p0.85    CDH 5
+spark   1.6.0+cdh5.7.0+180  1.cdh5.7.0.p0.84    CDH 5
+Sqoop   1.99.5+cdh5.7.0+38  1.cdh5.7.0.p0.79    CDH 5
+Sqoop   1.4.6+cdh5.7.0+56   1.cdh5.7.0.p0.78    CDH 5
+Whirr   0.9.0+cdh5.7.0+19   1.cdh5.7.0.p0.78    CDH 5
+ZooKeeper   3.4.5+cdh5.7.0+94   1.cdh5.7.0.p0.80    CDH 5
+accumulo    1.6.0+cdh5.1.4+45   1.cdh5.1.4.p0.124   不适用
+Cloudera Manager Management Daemon  5.7.0   1.cm570.p0.76   不适用
+Supervisord 3.0-cm5.7.0 不可用  不适用
+Java 7  JAVA_HOME=/usr/java/jdk1.7.0_67-cloudera java version &quot;1.7.0_67&quot; Java(TM) SE Runtime Environment (build 1.7.0_67-b01) Java HotSpot(TM) 64-Bit Server VM (build 24.65-b04, mixed mode)   不可用  不适用
+Cloudera Manager Agent  5.7.0   1.cm570.p0.76.el6   不适用</code></pre><h2 id="Mahout"><a href="#Mahout" class="headerlink" title="Mahout"></a>Mahout</h2>  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Hadoop/">Hadoop</a><a href="/tags/CDH/">CDH</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2016/04/13/hadoop-%E5%85%A5%E9%97%A8/" data-title="Hadoop-入门 | 道哥的后院" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2016/04/21/调度系统/" title="调度系统">
+  <strong>上一篇：</strong><br/>
+  <span>
+  调度系统</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2016/04/08/IR/"  title="IR">
+ <strong>下一篇：</strong><br/> 
+ <span>IR
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#CDH安装配置"><span class="toc-number">1.</span> <span class="toc-text">CDH安装配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装"><span class="toc-number">1.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置"><span class="toc-number">1.2.</span> <span class="toc-text">配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hadoop生态圈组件"><span class="toc-number">2.</span> <span class="toc-text">hadoop生态圈组件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache-Hadoop（Common、HDFS、MapReduce、YARN）"><span class="toc-number">2.1.</span> <span class="toc-text">Apache Hadoop（Common、HDFS、MapReduce、YARN）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache-HBase"><span class="toc-number">2.2.</span> <span class="toc-text">Apache HBase</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache-ZooKeeper"><span class="toc-number">2.3.</span> <span class="toc-text">Apache ZooKeeper</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache-Oozie"><span class="toc-number">2.4.</span> <span class="toc-text">Apache Oozie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache-Hive"><span class="toc-number">2.5.</span> <span class="toc-text">Apache Hive</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hue（已获-Apache-许可）"><span class="toc-number">2.6.</span> <span class="toc-text">Hue（已获 Apache 许可）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache-Flume"><span class="toc-number">2.7.</span> <span class="toc-text">Apache Flume</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cloudera-Impala（许可的-Apache）"><span class="toc-number">2.8.</span> <span class="toc-text">Cloudera Impala（许可的 Apache）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache-Sentry"><span class="toc-number">2.9.</span> <span class="toc-text">Apache Sentry</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache-Sqoop"><span class="toc-number">2.10.</span> <span class="toc-text">Apache Sqoop</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cloudera-Search（许可的-Apache）"><span class="toc-number">2.11.</span> <span class="toc-text">Cloudera Search（许可的 Apache）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache-Spark-todo"><span class="toc-number">2.12.</span> <span class="toc-text">Apache Spark(todo)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache-Storm-todo"><span class="toc-number">2.13.</span> <span class="toc-text">Apache Storm(todo)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装结果"><span class="toc-number">3.</span> <span class="toc-text">安装结果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Mahout"><span class="toc-number">4.</span> <span class="toc-text">Mahout</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/搜索/elasticSearch/" title="elasticSearch">elasticSearch<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/go/" title="go">go<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/zookeeper/middeleware/" title="middeleware">middeleware<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/大数据/storm/" title="storm">storm<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/zookeeper/" title="zookeeper">zookeeper<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/业务架构/" title="业务架构">业务架构<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/中间件/" title="中间件">中间件<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/久谦访谈/" title="久谦访谈">久谦访谈<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/读书志/书单/" title="书单">书单<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/javascript/代码规范/" title="代码规范">代码规范<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/javascript/代码规范/模块化/前端框架/" title="前端框架">前端框架<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/周报/" title="周报">周报<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/周记/" title="周记">周记<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/大数据/基础架构/" title="基础架构">基础架构<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/大数据/" title="大数据">大数据<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/安全/" title="安全">安全<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/市场/" title="市场">市场<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/心理学/" title="心理学">心理学<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/投资/" title="投资">投资<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/搜索/" title="搜索">搜索<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/大数据/日志/" title="日志">日志<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/javascript/代码规范/模块化/" title="模块化">模块化<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化技术/" title="虚拟化技术">虚拟化技术<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/诗词/" title="诗词">诗词<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/读书志/" title="读书志">读书志<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/随笔/" title="随笔">随笔<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/BPMN/" title="BPMN">BPMN<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Activiti/" title="Activiti">Activiti<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Drools/" title="Drools">Drools<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hadoop/" title="Hadoop">Hadoop<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CDH/" title="CDH">CDH<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=b3593ceb&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="/about" target="_blank" title="Douglas">Douglas</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

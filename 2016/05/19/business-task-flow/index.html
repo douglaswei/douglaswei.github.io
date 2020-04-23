@@ -1,0 +1,762 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>business-task-flow | 道哥的后院</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Douglas">
+    
+
+    
+    <meta name="description" content="解决的问题 Activiti：通过业务流程的管理 Drools：通过规则来实现任务流 举例说明： 请假审批流程，任务的各个阶段，流转到什么阶段，各阶段由谁来处理，这是activiti来搞定；整个流程中有一些规则，比如请假天数的调整，请假天数的合法性判断等，是通过规则管理，这些就是由Drools来搞定；     序号 技术组成 Activiti jBPM5    1 数据库持久层ORM MyBati">
+<meta property="og:type" content="article">
+<meta property="og:title" content="business-task-flow">
+<meta property="og:url" content="http://yoursite.com/2016/05/19/business-task-flow/index.html">
+<meta property="og:site_name" content="道哥的后院">
+<meta property="og:description" content="解决的问题 Activiti：通过业务流程的管理 Drools：通过规则来实现任务流 举例说明： 请假审批流程，任务的各个阶段，流转到什么阶段，各阶段由谁来处理，这是activiti来搞定；整个流程中有一些规则，比如请假天数的调整，请假天数的合法性判断等，是通过规则管理，这些就是由Drools来搞定；     序号 技术组成 Activiti jBPM5    1 数据库持久层ORM MyBati">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-05-19T02:27:11.000Z">
+<meta property="article:modified_time" content="2020-04-23T09:49:14.538Z">
+<meta property="article:author" content="Douglas">
+<meta property="article:tag" content="BPMN">
+<meta property="article:tag" content="Activiti">
+<meta property="article:tag" content="Drools">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="alternative" href="/atom.xml" title="道哥的后院" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="道哥的后院" title="道哥的后院"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="道哥的后院">道哥的后院</a></h1>
+				<h2 class="blog-motto">在海边有个院子,一条躺椅,一个胖丫鬟,种点乱七八糟的,闲来在胖丫鬟屁股上拧一把,换来娇羞的一声&#34;老爷讨厌&#34;</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/05/19/business-task-flow/" title="business-task-flow" itemprop="url">business-task-flow</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Douglas" target="_blank" itemprop="author">Douglas</a>
+		
+  <p class="article-time">
+    <time datetime="2016-05-19T02:27:11.000Z" itemprop="datePublished"> 发表于 2016-05-19</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#解决的问题"><span class="toc-number">1.</span> <span class="toc-text">解决的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Activiti"><span class="toc-number">2.</span> <span class="toc-text">Activiti</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#activiti-数据库"><span class="toc-number">2.1.</span> <span class="toc-text">activiti 数据库</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Service"><span class="toc-number">2.2.</span> <span class="toc-text">Service</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#bpmn文件"><span class="toc-number">2.3.</span> <span class="toc-text">bpmn文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#个人小结"><span class="toc-number">2.4.</span> <span class="toc-text">个人小结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Drools"><span class="toc-number">3.</span> <span class="toc-text">Drools</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#drl-Runtime-amp-Language"><span class="toc-number">3.1.</span> <span class="toc-text">drl Runtime &amp; Language</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Runtime"><span class="toc-number">3.1.1.</span> <span class="toc-text">Runtime</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Expert-System-专家系统"><span class="toc-number">3.1.2.</span> <span class="toc-text">Expert System &#x2F; 专家系统</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Rete-Algorithm"><span class="toc-number">3.1.3.</span> <span class="toc-text">Rete Algorithm</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ReteOO-Algorithm"><span class="toc-number">3.1.4.</span> <span class="toc-text">ReteOO Algorithm</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#PHREAK-Algorithm"><span class="toc-number">3.1.5.</span> <span class="toc-text">PHREAK Algorithm</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Rule-Language"><span class="toc-number">3.1.6.</span> <span class="toc-text">Rule Language</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#sample"><span class="toc-number">3.2.</span> <span class="toc-text">sample</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#EasyRules"><span class="toc-number">3.3.</span> <span class="toc-text">EasyRules</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Activiti-Drools-Spring-应用"><span class="toc-number">4.</span> <span class="toc-text">Activiti + Drools + Spring 应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#todo"><span class="toc-number">5.</span> <span class="toc-text">todo</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#rule-language-document"><span class="toc-number">5.1.</span> <span class="toc-text">rule language document</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h3 id="解决的问题"><a href="#解决的问题" class="headerlink" title="解决的问题"></a>解决的问题</h3><ol>
+<li>Activiti：通过业务流程的管理</li>
+<li>Drools：通过规则来实现任务流</li>
+<li>举例说明： 请假审批流程，任务的各个阶段，流转到什么阶段，各阶段由谁来处理，这是activiti来搞定；整个流程中有一些规则，比如请假天数的调整，请假天数的合法性判断等，是通过规则管理，这些就是由Drools来搞定；</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>技术组成</th>
+<th>Activiti</th>
+<th>jBPM5</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>数据库持久层ORM</td>
+<td>MyBatis3</td>
+<td>Hibernate3</td>
+</tr>
+<tr>
+<td>2</td>
+<td>持久化标准</td>
+<td>无</td>
+<td>JPA规范</td>
+</tr>
+<tr>
+<td>3</td>
+<td>事务管理</td>
+<td>MyBatis机制/Spring事务控制</td>
+<td>Bitronix，基于JTA事务管理</td>
+</tr>
+<tr>
+<td>4</td>
+<td>数据库连接方式</td>
+<td>Jdbc/DataSource</td>
+<td>Jdbc/DataSource</td>
+</tr>
+<tr>
+<td>5</td>
+<td>支持数据库</td>
+<td>Oracle、SQL Server、MySQL等多数数据库</td>
+<td>Oracle、SQL Server、MySQL等多数数据库</td>
+</tr>
+<tr>
+<td>6</td>
+<td>设计模式</td>
+<td>Command模式、观察者模式等</td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td>内部服务通讯</td>
+<td>Service间通过API调用</td>
+<td>基于Apache Mina异步通讯</td>
+</tr>
+<tr>
+<td>8</td>
+<td>集成接口</td>
+<td>SOAP、Mule、RESTful</td>
+<td>消息通讯</td>
+</tr>
+<tr>
+<td>9</td>
+<td>支持的流程格式</td>
+<td>BPMN2、xPDL、jPDL等</td>
+<td>目前仅只支持BPMN2 xml</td>
+</tr>
+<tr>
+<td>10</td>
+<td>引擎核心</td>
+<td>PVM（流程虚拟机）</td>
+<td>Drools</td>
+</tr>
+<tr>
+<td>11</td>
+<td>技术前身</td>
+<td>jBPM3、jBPM4</td>
+<td>Drools Flow</td>
+</tr>
+<tr>
+<td>12</td>
+<td>所属公司</td>
+<td>Alfresco</td>
+<td>jBoss.org</td>
+</tr>
+</tbody></table>
+<h3 id="Activiti"><a href="#Activiti" class="headerlink" title="Activiti"></a>Activiti</h3><h4 id="activiti-数据库"><a href="#activiti-数据库" class="headerlink" title="activiti 数据库"></a>activiti 数据库</h4><p>ACT_RE_*: ‘RE’表示repository，这个前缀的表包含了流程定义和流程静态资源 （图片，规则，等等）。</p>
+<pre><code>1. act_re_deployment 部署信息表
+2. act_re_model  流程设计模型部署表
+3. act_re_procdef  流程定义数据表</code></pre><hr>
+<p>ACT_RU_*: ‘RU’表示runtime。这些运行时的表，包含流程实例，任务，变量，异步任务，等运行中的数据。 Activiti只在流程实例执行过程中保存这些数据， 在流程结束时就会删除这些记录。 这样运行时表可以一直很小速度很快。</p>
+<pre><code>1. act_ru_execution 运行时流程执行实例表
+2. act_ru_identitylink 运行时流程人员表，主要存储任务节点与参与者的相关信息
+3. act_ru_task 运行时任务节点表
+4. act_ru_variable 运行时流程变量数据表</code></pre><hr>
+<p>ACT_HI_*: ‘HI’表示history。这些表包含身份信息，比如用户，组等等。</p>
+<pre><code>1. act_hi_actinst 历史节点表
+2. act_hi_attachment历史附件表
+3. act_hi_comment历史意见表
+4. act_hi_identitylink历史流程人员表
+5. act_hi_detail历史详情表，提供历史变量的查询
+6. act_hi_procinst历史流程实例表
+7. act_hi_taskinst历史任务实例表
+8. act_hi_varinst历史变量表</code></pre><hr>
+<p>ACT_ID_*: ‘ID’表示identity。 这些表包含历史数据，比如历史流程实例， 变量，任务等等。</p>
+<pre><code>1. act_id_group用户组信息表
+2. act_id_info用户扩展信息表
+3. act_id_membership用户与用户组对应信息表
+4. act_id_user用户信息表</code></pre><hr>
+<p>ACT_GE_*: 通用数据。用于不同场景下，如存放资源文件。</p>
+<pre><code>1. act_ge_bytearray二进制数据表
+2. act_ge_property属性数据表存储整个流程引擎级别的数据,初始化表结构时，会默认插入三条记录，</code></pre><hr>
+<h4 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h4><p>RepositoryService： Activiti 中每一个不同版本的业务流程的定义都需要使用一些定义文件，部署文件和支持数据 ( 例如 BPMN2.0 XML 文件，表单定义文件，流程定义图像文件等 )，这些文件都存储在 Activiti 内建的 Repository 中。Repository Service 提供了对 repository 的存取服务。</p>
+<p>RuntimeService：在 Activiti 中，每当一个流程定义被启动一次之后，都会生成一个相应的流程对象实例。Runtime Service 提供了启动流程、查询流程实例、设置获取流程实例变量等功能。此外它还提供了对流程部署，流程定义和流程实例的存取服务。</p>
+<p>TaskService：在 Activiti 中业务流程定义中的每一个执行节点被称为一个 Task，对流程中的数据存取，状态变更等操作均需要在 Task 中完成。Task Service 提供了对用户 Task 和 Form 相关的操作。它提供了运行时任务查询、领取、完成、删除以及变量设置等功能。</p>
+<p>IdentityService：Activiti 中内置了用户以及组管理的功能，必须使用这些用户和组的信息才能获取到相应的 Task。Identity Service 提供了对 Activiti 系统中的用户和组的管理功能。</p>
+<p>ManagementService：Management Service 提供了对 Activiti 流程引擎的管理和维护功能，这些功能不在工作流驱动的应用程序中使用，主要用于 Activiti 系统的日常维护。</p>
+<p>HistoryService: History Service 用于获取正在运行或已经完成的流程实例的信息，与 Runtime Service 中获取的流程信息不同，历史信息包含已经持久化存储的永久信息，并已经被针对查询优化。</p>
+<p>FormService: Activiti 中的流程和状态 Task 均可以关联业务相关的数据。通过使用 Form Service 可以存取启动和完成任务所需的表单数据并且根据需要来渲染表单。</p>
+<hr>
+<p>获取各种service</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 使用默认配置文件获取 ProcessEngine 对象实例</span><br><span class="line">ProcessEngine processEngine &#x3D; </span><br><span class="line">ProcessEngineConfiguration.createStandaloneProcessEngineConfiguration().\</span><br><span class="line">buildProcessEngine(); </span><br><span class="line">&#x2F;&#x2F; 通过 ProcessEngine 实例获得 RepositoryService </span><br><span class="line">RepositoryService repositoryService &#x3D; processEngine.getRepositoryService(); </span><br><span class="line">&#x2F;&#x2F; 通过 ProcessEngine 实例获得 RuntimeService </span><br><span class="line">RuntimeService runtimeService &#x3D; processEngine.getRuntimeService(); </span><br><span class="line">&#x2F;&#x2F; 通过 ProcessEngine 实例获得 TaskService </span><br><span class="line">TaskService taskService &#x3D; processEngine.getTaskService(); </span><br><span class="line">HistoryService historyService &#x3D; processEngine.getHistoryService(); </span><br><span class="line">&#x2F;&#x2F; 通过 ProcessEngine 实例获得 FormService </span><br><span class="line">FormService formService &#x3D; processEngine.getFormService(); </span><br><span class="line">&#x2F;&#x2F; 通过 ProcessEngine 实例获得 ManagementService </span><br><span class="line">ManagementService managementService &#x3D; processEngine.getManagementService(); </span><br><span class="line">&#x2F;&#x2F; 通过 ProcessEngine 实例获得 IdentityService </span><br><span class="line">IdentityService identityService &#x3D; processEngine.getIdentityService();</span><br></pre></td></tr></table></figure>
+
+<h4 id="bpmn文件"><a href="#bpmn文件" class="headerlink" title="bpmn文件"></a>bpmn文件</h4><h4 id="个人小结"><a href="#个人小结" class="headerlink" title="个人小结"></a>个人小结</h4><p>actitici本质上对业务流程的几个要素做了逻辑抽象和划分；解耦成了几个模块：process，task，identity，form，history；</p>
+<p>概念上比较清晰，而已；对于后端开发而言，价值是提供了较为清晰通用的业务流程架构，减少了很多代码开发量；缺点是不太实用，学习activiti的成本不低；所以不建议使用activici；</p>
+<h3 id="Drools"><a href="#Drools" class="headerlink" title="Drools"></a>Drools</h3><pre><code>Drools强调，自己不仅仅是规则引擎，更多的是一个业务工作流，这点和actviti有overlap，可应用最多的却恰恰是规则引擎；
+所以打算从两个角度去学习Drools，一是作为规则引擎（和Lua的异同），</code></pre><h4 id="drl-Runtime-amp-Language"><a href="#drl-Runtime-amp-Language" class="headerlink" title="drl Runtime &amp; Language"></a>drl Runtime &amp; Language</h4><h5 id="Runtime"><a href="#Runtime" class="headerlink" title="Runtime"></a>Runtime</h5><p>backward and forward reasoning system / Hybrid </p>
+<h5 id="Expert-System-专家系统"><a href="#Expert-System-专家系统" class="headerlink" title="Expert System / 专家系统"></a>Expert System / 专家系统</h5><h5 id="Rete-Algorithm"><a href="#Rete-Algorithm" class="headerlink" title="Rete Algorithm"></a>Rete Algorithm</h5><p>ReteNode(root)<br>PbjectTypeNode-&gt;(LeftInputAdapterNode, AlphaNode, BetaNode)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">AlphaNode: evaluate liter conditions</span><br><span class="line">BetaNode(JoinNode, NoteNode): 2-input node, used to compare 2 objects, BetaNode ha memory</span><br><span class="line">	The left is generally a lis of objects (a tuple in Drools);</span><br><span class="line">	The right is a single object</span><br></pre></td></tr></table></figure>
+<h5 id="ReteOO-Algorithm"><a href="#ReteOO-Algorithm" class="headerlink" title="ReteOO Algorithm"></a>ReteOO Algorithm</h5><h5 id="PHREAK-Algorithm"><a href="#PHREAK-Algorithm" class="headerlink" title="PHREAK Algorithm"></a>PHREAK Algorithm</h5><h5 id="Rule-Language"><a href="#Rule-Language" class="headerlink" title="Rule Language"></a>Rule Language</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">package package-name imports</span><br><span class="line">globals</span><br><span class="line">functions</span><br><span class="line">queries</span><br><span class="line">rules</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">rule &quot;name&quot; attributes</span><br><span class="line">when</span><br><span class="line">    LHS</span><br><span class="line">then</span><br><span class="line">    RHS</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<hr>
+<p>LHS</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">单值约束：</span><br><span class="line">	matches</span><br><span class="line">	contains</span><br><span class="line">	memberOf</span><br><span class="line">字符串约束：</span><br><span class="line">绑定变量约束：</span><br><span class="line">$m : Message(bla)</span><br><span class="line">返回值约束：</span><br><span class="line">复合值约束：</span><br><span class="line">多重约束：</span><br><span class="line">内联EVAL约束：</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>RHS</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">insert</span><br><span class="line">update</span><br><span class="line">delete</span><br></pre></td></tr></table></figure>
+
+<h4 id="sample"><a href="#sample" class="headerlink" title="sample"></a>sample</h4><p>构建knowledgeBase</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">KnowledgeBuilder kbuilder &#x3D; KnowledgeBuilderFactory.newKnowledgeBuilder();&#x2F;&#x2F;创建规则构建器</span><br><span class="line">        kbuilder.add(ResourceFactory.newClassPathResource(&quot;test.drl&quot;), ResourceType.DRL);&#x2F;&#x2F;加载规则文件，并增加到构建器</span><br><span class="line">        KnowledgeBuilderErrors errors &#x3D; kbuilder.getErrors();</span><br><span class="line">        if (errors.size() &gt; 0) &#123;&#x2F;&#x2F;编译规则过程中发现规则是否有错误</span><br><span class="line">            for (KnowledgeBuilderError error: errors) &#123;System.out.println(&quot;规则中存在错误，错误消息如下：&quot;);</span><br><span class="line">                System.err.println(error);</span><br><span class="line">            &#125;</span><br><span class="line">            throw new IllegalArgumentException(&quot;Could not parse knowledge.&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        KnowledgeBase kbase &#x3D; KnowledgeBaseFactory.newKnowledgeBase();&#x2F;&#x2F;创建规则构建库</span><br><span class="line">        kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());&#x2F;&#x2F;构建器加载的资源文件包放入构建库</span><br><span class="line">        return kbase;</span><br></pre></td></tr></table></figure>
+
+<p>FireRule</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">StatefulKnowledgeSession ksession &#x3D; kbase.newStatefulKnowledgeSession();&#x2F;&#x2F;创建会话</span><br><span class="line">KnowledgeRuntimeLogger logger &#x3D; KnowledgeRuntimeLoggerFactory.newFileLogger(ksession, &quot;test&quot;);</span><br><span class="line">&#x2F;&#x2F; go !</span><br><span class="line">Message message &#x3D; new Message();</span><br><span class="line">message.setMessage(&quot;Hello World&quot;);</span><br><span class="line">message.setStatus(Message.HELLO);</span><br><span class="line">ksession.insert(message);&#x2F;&#x2F;插入</span><br><span class="line">ksession.fireAllRules();&#x2F;&#x2F;执行规则</span><br><span class="line">ksession &#x3D; kbase.newStatefulKnowledgeSession();</span><br><span class="line">message.setMessage(&quot;raw goodbye&quot;);</span><br><span class="line">message.setStatus(Message.GOODBYE);</span><br><span class="line">ksession.insert(message);&#x2F;&#x2F;插入</span><br><span class="line">ksession.fireAllRules();&#x2F;&#x2F;执行规则</span><br><span class="line">logger.close();&#x2F;&#x2F;关闭</span><br></pre></td></tr></table></figure>
+
+<p>Kie</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+resources</span><br><span class="line"> -META-INF</span><br><span class="line">  -kmodule.xml</span><br><span class="line"> -bla</span><br><span class="line">  -sub_bla.drl</span><br></pre></td></tr></table></figure>
+
+<p>kmodule.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;kmodule xmlns&#x3D;&quot;http:&#x2F;&#x2F;jboss.org&#x2F;kie&#x2F;6.0.0&#x2F;kmodule&quot;&gt;</span><br><span class="line">    &lt;kbase name&#x3D;&quot;bla&quot; packages&#x3D;&quot;bla&quot;&gt;</span><br><span class="line">        &lt;ksession name&#x3D;&quot;ksession-bla&quot;&#x2F;&gt;</span><br><span class="line">    &lt;&#x2F;kbase&gt;</span><br><span class="line">    &lt;kbase name&#x3D;&quot;dtables&quot; packages&#x3D;&quot;dtables&quot;&gt;</span><br><span class="line">        &lt;ksession name&#x3D;&quot;ksession-dtables&quot;&#x2F;&gt;</span><br><span class="line">    &lt;&#x2F;kbase&gt;</span><br><span class="line">&lt;&#x2F;kmodule&gt;</span><br></pre></td></tr></table></figure>
+
+<p>usage：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">KieServices kieServices &#x3D; KieServices.Factory.get();</span><br><span class="line">KieContainer kieContainer &#x3D; kieServices.getKieClasspathContainer();</span><br><span class="line">KieSession kSession &#x3D; kieContainer.newKieSession(&quot;ksession-rules&quot;);</span><br><span class="line">Message message &#x3D; new Message();</span><br><span class="line">message.setMessage(&quot;Hello World&quot;);</span><br><span class="line">message.setStatus(Message.HELLO);</span><br><span class="line">kSession.insert(message);	</span><br><span class="line">kSession.fireAllRules();</span><br></pre></td></tr></table></figure>
+
+<h4 id="EasyRules"><a href="#EasyRules" class="headerlink" title="EasyRules"></a>EasyRules</h4><p>简单粗暴有效，drools的替代品，后期考虑替代掉；</p>
+<h3 id="Activiti-Drools-Spring-应用"><a href="#Activiti-Drools-Spring-应用" class="headerlink" title="Activiti + Drools + Spring 应用"></a>Activiti + Drools + Spring 应用</h3><h3 id="todo"><a href="#todo" class="headerlink" title="todo"></a>todo</h3><h4 id="rule-language-document"><a href="#rule-language-document" class="headerlink" title="rule language document"></a>rule language document</h4>  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/%E4%B8%9A%E5%8A%A1%E6%9E%B6%E6%9E%84/">业务架构</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/BPMN/">BPMN</a><a href="/tags/Activiti/">Activiti</a><a href="/tags/Drools/">Drools</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2016/05/19/business-task-flow/" data-title="business-task-flow | 道哥的后院" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2016/06/02/storm/" title="storm">
+  <strong>上一篇：</strong><br/>
+  <span>
+  storm</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2016/05/05/android/"  title="android start">
+ <strong>下一篇：</strong><br/> 
+ <span>android start
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#解决的问题"><span class="toc-number">1.</span> <span class="toc-text">解决的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Activiti"><span class="toc-number">2.</span> <span class="toc-text">Activiti</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#activiti-数据库"><span class="toc-number">2.1.</span> <span class="toc-text">activiti 数据库</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Service"><span class="toc-number">2.2.</span> <span class="toc-text">Service</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#bpmn文件"><span class="toc-number">2.3.</span> <span class="toc-text">bpmn文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#个人小结"><span class="toc-number">2.4.</span> <span class="toc-text">个人小结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Drools"><span class="toc-number">3.</span> <span class="toc-text">Drools</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#drl-Runtime-amp-Language"><span class="toc-number">3.1.</span> <span class="toc-text">drl Runtime &amp; Language</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Runtime"><span class="toc-number">3.1.1.</span> <span class="toc-text">Runtime</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Expert-System-专家系统"><span class="toc-number">3.1.2.</span> <span class="toc-text">Expert System &#x2F; 专家系统</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Rete-Algorithm"><span class="toc-number">3.1.3.</span> <span class="toc-text">Rete Algorithm</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ReteOO-Algorithm"><span class="toc-number">3.1.4.</span> <span class="toc-text">ReteOO Algorithm</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#PHREAK-Algorithm"><span class="toc-number">3.1.5.</span> <span class="toc-text">PHREAK Algorithm</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Rule-Language"><span class="toc-number">3.1.6.</span> <span class="toc-text">Rule Language</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#sample"><span class="toc-number">3.2.</span> <span class="toc-text">sample</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#EasyRules"><span class="toc-number">3.3.</span> <span class="toc-text">EasyRules</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Activiti-Drools-Spring-应用"><span class="toc-number">4.</span> <span class="toc-text">Activiti + Drools + Spring 应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#todo"><span class="toc-number">5.</span> <span class="toc-text">todo</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#rule-language-document"><span class="toc-number">5.1.</span> <span class="toc-text">rule language document</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/android/" title="android">android<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/搜索/elasticSearch/" title="elasticSearch">elasticSearch<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/go/" title="go">go<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/zookeeper/middeleware/" title="middeleware">middeleware<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/大数据/storm/" title="storm">storm<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/zookeeper/" title="zookeeper">zookeeper<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/业务架构/" title="业务架构">业务架构<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/中间件/" title="中间件">中间件<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/久谦访谈/" title="久谦访谈">久谦访谈<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/读书志/书单/" title="书单">书单<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/javascript/代码规范/" title="代码规范">代码规范<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/javascript/代码规范/模块化/前端框架/" title="前端框架">前端框架<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/周报/" title="周报">周报<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/周记/" title="周记">周记<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/大数据/基础架构/" title="基础架构">基础架构<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/大数据/" title="大数据">大数据<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/安全/" title="安全">安全<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/市场/" title="市场">市场<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/心理学/" title="心理学">心理学<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/投资/" title="投资">投资<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/搜索/" title="搜索">搜索<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/大数据/日志/" title="日志">日志<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/javascript/代码规范/模块化/" title="模块化">模块化<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/虚拟化技术/" title="虚拟化技术">虚拟化技术<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/诗词/" title="诗词">诗词<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/读书志/" title="读书志">读书志<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/随笔/" title="随笔">随笔<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/BPMN/" title="BPMN">BPMN<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Activiti/" title="Activiti">Activiti<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Drools/" title="Drools">Drools<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hadoop/" title="Hadoop">Hadoop<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/CDH/" title="CDH">CDH<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=b3593ceb&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Larry Page in Google. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2176287895" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="/about" target="_blank" title="Douglas">Douglas</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
