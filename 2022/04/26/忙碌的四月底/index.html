@@ -4,24 +4,24 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>docker环境 | 道哥的后花园</title>
+    <title>忙碌的四月底 | 道哥的后花园</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Douglas Emerson">
     
 
     
-    <meta name="description" content="容器化能够帮助高效的帮助搭建环境 单机容器化环境docker yum install docker -yecho “{&quot;registry-mirrors&quot;: [&quot;https:&#x2F;&#x2F;registry.docker-cn.com\&quot;]}&quot; | tee &#x2F;etc&#x2F;docker&#x2F;daemon.jsonservice docker">
+    <meta name="description" content="工作到了月末，双月末，总是比较忙碌；互联网本次收到空前的冲击，所有公司在可见预期范围内，如果业务不能出现较大的增长，意味着在二级市场上能够募集到的子弹越少，除非公司本身有印钞机一般的业务线，必然面临成本模型优化。从公司视角来说，无可厚非，business is business，生存是第一要务。从个人视角来说，无论在那个阶段都需要有较好的自我认知，清楚知道自己的优势和劣势。充分扬长避短。切不可盲目">
 <meta property="og:type" content="article">
-<meta property="og:title" content="docker环境">
-<meta property="og:url" content="http://example.com/2022/04/24/docker%E7%8E%AF%E5%A2%83/index.html">
+<meta property="og:title" content="忙碌的四月底">
+<meta property="og:url" content="http://example.com/2022/04/26/%E5%BF%99%E7%A2%8C%E7%9A%84%E5%9B%9B%E6%9C%88%E5%BA%95/index.html">
 <meta property="og:site_name" content="道哥的后花园">
-<meta property="og:description" content="容器化能够帮助高效的帮助搭建环境 单机容器化环境docker yum install docker -yecho “{&quot;registry-mirrors&quot;: [&quot;https:&#x2F;&#x2F;registry.docker-cn.com\&quot;]}&quot; | tee &#x2F;etc&#x2F;docker&#x2F;daemon.jsonservice docker">
+<meta property="og:description" content="工作到了月末，双月末，总是比较忙碌；互联网本次收到空前的冲击，所有公司在可见预期范围内，如果业务不能出现较大的增长，意味着在二级市场上能够募集到的子弹越少，除非公司本身有印钞机一般的业务线，必然面临成本模型优化。从公司视角来说，无可厚非，business is business，生存是第一要务。从个人视角来说，无论在那个阶段都需要有较好的自我认知，清楚知道自己的优势和劣势。充分扬长避短。切不可盲目">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-04-24T01:25:16.000Z">
-<meta property="article:modified_time" content="2022-04-24T11:20:31.861Z">
+<meta property="article:published_time" content="2022-04-26T14:56:39.000Z">
+<meta property="article:modified_time" content="2022-04-26T15:09:07.046Z">
 <meta property="article:author" content="Douglas Emerson">
-<meta property="article:tag" content="docker">
+<meta property="article:tag" content="随笔">
 <meta name="twitter:card" content="summary">
 
     
@@ -88,14 +88,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2022/04/24/docker环境/" title="docker环境" itemprop="url">docker环境</a>
+      <a href="/2022/04/26/忙碌的四月底/" title="忙碌的四月底" itemprop="url">忙碌的四月底</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Douglas Emerson" target="_blank" itemprop="author">Douglas Emerson</a>
 		
   <p class="article-time">
-    <time datetime="2022-04-24T01:25:16.000Z" itemprop="datePublished"> 发表于 2022-04-24</time>
+    <time datetime="2022-04-26T14:56:39.000Z" itemprop="datePublished"> 发表于 2022-04-26</time>
     
   </p>
 </header>
@@ -104,40 +104,22 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E6%9C%BA%E5%AE%B9%E5%99%A8%E5%8C%96%E7%8E%AF%E5%A2%83"><span class="toc-number">1.</span> <span class="toc-text">单机容器化环境</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#docker"><span class="toc-number">1.1.</span> <span class="toc-text">docker</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-compose"><span class="toc-number">1.2.</span> <span class="toc-text">docker compose</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E5%8C%96%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text">容器化基本操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker"><span class="toc-number">2.1.</span> <span class="toc-text">Docker</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#build"><span class="toc-number">2.1.1.</span> <span class="toc-text">build</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#run"><span class="toc-number">2.1.2.</span> <span class="toc-text">run</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#exec"><span class="toc-number">2.1.3.</span> <span class="toc-text">exec</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">小结</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C"><span class="toc-number">1.</span> <span class="toc-text">工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BB%E4%B9%A6"><span class="toc-number">2.</span> <span class="toc-text">读书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%BA%E7%94%9F"><span class="toc-number">3.</span> <span class="toc-text">人生</span></a></li></ol>
 		
 		</div>
 		
-		<p>容器化能够帮助高效的帮助搭建环境</p>
-<h2 id="单机容器化环境"><a href="#单机容器化环境" class="headerlink" title="单机容器化环境"></a>单机容器化环境</h2><h3 id="docker"><a href="#docker" class="headerlink" title="docker"></a>docker</h3><blockquote>
-<p>yum install docker -y<br>echo “{&quot;registry-mirrors&quot;: [&quot;<a target="_blank" rel="noopener" href="https://registry.docker-cn.com/&quot;]%7D&quot;">https://registry.docker-cn.com\&quot;]}&quot;</a> | tee &#x2F;etc&#x2F;docker&#x2F;daemon.json<br>service docker restart</p>
-</blockquote>
-<h3 id="docker-compose"><a href="#docker-compose" class="headerlink" title="docker compose"></a>docker compose</h3><blockquote>
-<p>yum install docker-compse -y<br>docker-compose version</p>
-</blockquote>
-<h2 id="容器化基本操作"><a href="#容器化基本操作" class="headerlink" title="容器化基本操作"></a>容器化基本操作</h2><h3 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h3><h4 id="build"><a href="#build" class="headerlink" title="build"></a>build</h4><blockquote>
-<p>待补充</p>
-</blockquote>
-<h4 id="run"><a href="#run" class="headerlink" title="run"></a>run</h4><p>docker run -i -t IMAGE_ID -p HOST_PORT:CONTAINER_PORT –name </p>
-<h4 id="exec"><a href="#exec" class="headerlink" title="exec"></a>exec</h4><p>常用docker镜像: <a target="_blank" rel="noopener" href="https://github.com/douglaswei/dockerFiles">https://github.com/douglaswei/dockerFiles</a></p>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ol>
-<li>虽没有大的进步|进展，但回到熟悉的节奏，感觉挺好</li>
-<li>凡事需要以正确的方式去做才能获得结果；需要总结方法，按照方法去实践；</li>
-</ol>
+		<h2 id="工作"><a href="#工作" class="headerlink" title="工作"></a>工作</h2><p>到了月末，双月末，总是比较忙碌；<br>互联网本次收到空前的冲击，所有公司在可见预期范围内，如果业务不能出现较大的增长，意味着在二级市场上能够募集到的子弹越少，除非公司本身有印钞机一般的业务线，必然面临成本模型优化。<br>从公司视角来说，无可厚非，business is business，生存是第一要务。<br>从个人视角来说，无论在那个阶段都需要有较好的自我认知，清楚知道自己的优势和劣势。充分扬长避短。切不可盲目的以自我为中心去建立对事情的判断以及抉择。</p>
+<h2 id="读书"><a href="#读书" class="headerlink" title="读书"></a>读书</h2><p>最近在读曾国藩家书，进度比较缓慢，读书如逆水行舟，需要坚持，自勉。<br>曾国藩在为人方面，有较高的自律，最核心的理念是谦虚和勤奋。才华不够的人需要勤奋，有才的人要谦虚。在学习上，强调博和专</p>
+<h2 id="人生"><a href="#人生" class="headerlink" title="人生"></a>人生</h2><p>半年来，想了很多事，试着去推动，坦白说，并没有很大进展，说得不好听，就是一事无成。<br>越是这个时候，越需要冷静的复盘和分析，复盘事情，复盘遇到的人。事情上，找出没做好的核心问题，以后怎么做的更好；人，以人为鉴，学习朋友和上级的长处，怎么内化为自己的能力。<br>这小半辈子，不算太坏，也并没有及格。未来希望多结善缘，能先做好除了工作以外的一件事。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/CS/">CS</a>
-</div>
-
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/docker/">docker</a>
+  <span></span> <a href="/tags/随笔/">随笔</a>
   </div>
 
 </div>
@@ -146,7 +128,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://example.com/2022/04/24/docker%E7%8E%AF%E5%A2%83/" data-title="docker环境 | 道哥的后花园" data-tsina="" class="share clearfix">
+	  <div data-url="http://example.com/2022/04/26/%E5%BF%99%E7%A2%8C%E7%9A%84%E5%9B%9B%E6%9C%88%E5%BA%95/" data-title="忙碌的四月底 | 道哥的后花园" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -159,19 +141,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2022/04/26/忙碌的四月底/" title="忙碌的四月底">
-  <strong>上一篇：</strong><br/>
-  <span>
-  忙碌的四月底</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2022/04/23/新的开始/"  title="新的开始">
+<a href="/2022/04/24/docker环境/"  title="docker环境">
  <strong>下一篇：</strong><br/> 
- <span>新的开始
+ <span>docker环境
 </span>
 </a>
 </div>
@@ -188,7 +162,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E6%9C%BA%E5%AE%B9%E5%99%A8%E5%8C%96%E7%8E%AF%E5%A2%83"><span class="toc-number">1.</span> <span class="toc-text">单机容器化环境</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#docker"><span class="toc-number">1.1.</span> <span class="toc-text">docker</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-compose"><span class="toc-number">1.2.</span> <span class="toc-text">docker compose</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E5%8C%96%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text">容器化基本操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker"><span class="toc-number">2.1.</span> <span class="toc-text">Docker</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#build"><span class="toc-number">2.1.1.</span> <span class="toc-text">build</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#run"><span class="toc-number">2.1.2.</span> <span class="toc-text">run</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#exec"><span class="toc-number">2.1.3.</span> <span class="toc-text">exec</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">小结</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C"><span class="toc-number">1.</span> <span class="toc-text">工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BB%E4%B9%A6"><span class="toc-number">2.</span> <span class="toc-text">读书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%BA%E7%94%9F"><span class="toc-number">3.</span> <span class="toc-text">人生</span></a></li></ol>
  
   </div>
 
